@@ -47,3 +47,5 @@ Desktop.ini
 
 # Dedicated unversioned folder
 /unversioned/**/*
+_stdlib/_setup.dm
+.gitignore
