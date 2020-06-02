@@ -1357,6 +1357,10 @@ datum/pathogeneffects/malevolent/capacitor/unlimited
 	load_check(var/mob/M as mob, var/datum/pathogen/origin)
 		return null
 
+	disease_act(var/mob/M as mob, var/datum/pathogen/origin)
+		M.bioHolder.AddEffect("resist_electric", variant = 2)
+		..()
+
 	react_to(var/R, var/zoom)
 		if (R == "voltagen")
 			return "The pathogen appears to have the ability to infinitely absorb the voltagen."
