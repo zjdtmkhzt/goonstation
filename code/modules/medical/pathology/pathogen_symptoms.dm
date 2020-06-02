@@ -1353,6 +1353,7 @@ datum/pathogeneffects/malevolent/capacitor
 
 datum/pathogeneffects/malevolent/capacitor/unlimited
 	name = "Unlimited Capacitor"
+	beneficial = 1
 
 	load_check(var/mob/M as mob, var/datum/pathogen/origin)
 		return null
@@ -1363,7 +1364,7 @@ datum/pathogeneffects/malevolent/capacitor/unlimited
 
 	react_to(var/R, var/zoom)
 		if (R == "voltagen")
-			return "The pathogen appears to have the ability to infinitely absorb the voltagen."
+			return "The pathogen appears to have the ability to infinitely absorb the voltagen, repairing itself in the process."
 
 datum/pathogeneffects/malevolent/sunglass
 	name = "Sunglass Glands"
