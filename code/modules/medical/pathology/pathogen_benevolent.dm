@@ -456,3 +456,24 @@ datum/pathogeneffects/benevolent/genetictemplate
 
 	may_react_to()
 		return "The pathogen cells all look exactly alike."
+
+datum/pathogeneffects/benevolent/fingerguns
+	name = "Finger Guns"
+	desc = "Motherfucking finger guns"
+	infect_type = INFECT_TOUCH
+	rarity = RARITY_RARE
+
+	onpoint(var/mob/M as mob, var/atom/target, var/datum/pathogen/origin)
+		var/turf/E = get_turf(target)
+		muzzle_flash_attack_particle(M, M.loc, target, "muzzle_flash")
+		shoot_projectile_ST_pixel_spread(M, new /datum/projectile/special/howitzer, E, 0, 0, 0)
+		M.visible_message("<span class='alert'>[M.name] shoots at [target] with their finger guns!</span>", "<span class='alert'>You shoot at [target] with your finger guns!</span>")
+		return 0
+
+	react_to(var/R, var/zoom)
+		if (R == "iron" || R == "aluminium" || R == "silver")
+			if (zoom)
+				return "The cells seem to be concentrating the [R] in the shape of ... a bullet?"
+
+	may_react_to()
+		return "The pathogen cells seem to move at high speeds."

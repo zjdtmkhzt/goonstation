@@ -35,6 +35,7 @@
 	proc/onsay(message, var/datum/pathogen/P)
 	proc/onadd(var/datum/pathogen/P)
 	proc/onemote(var/mob/target, message, var/datum/pathogen/P)
+	proc/onpoint(var/mob/target, target, var/datum/pathogen/P)
 	proc/ondeath(var/datum/pathogen/P)
 	proc/oncured(var/datum/pathogen/P)
 

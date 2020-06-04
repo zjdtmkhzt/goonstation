@@ -121,6 +121,11 @@ datum/pathogeneffects
 	proc/onemote(var/mob/target, act, var/datum/pathogen/P)
 		return 1
 
+	// onpoint(mob, atom, datum/pathogen) : string
+	// OVERRIDE: Overriding this is situational.
+	proc/onpoint(var/mob/M as mob, target, var/datum/pathogen/origin)
+		return 1
+
 	// ondeath(mob, datum/pathogen) : void
 	// OVERRIDE: Overriding this is situational.
 	proc/ondeath(var/mob/M as mob, var/datum/pathogen/origin)

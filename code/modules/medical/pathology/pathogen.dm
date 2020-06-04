@@ -1423,6 +1423,12 @@ datum/pathogen
 		return message
 
 	// Act on emoting. Vetoing available by returning 0.
+	proc/onpoint(target)
+		suppressant.onpoint(infected, target, src)
+		for (var/effect in src.effects)
+			. *= effect:onpoint(infected, target, src)
+
+	// Act on pointing. Vetoing available by returning 0.
 	proc/onemote(act)
 		suppressant.onemote(infected, act, src)
 		for (var/effect in src.effects)

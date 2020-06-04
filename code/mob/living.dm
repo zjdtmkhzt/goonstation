@@ -488,6 +488,13 @@
 	if (istype(target, /obj/decal/point))
 		return
 
+	if(ishuman(src))
+		var/mob/living/carbon/human/H = src
+		for (var/uid in H.pathogens)
+			var/datum/pathogen/P = H.pathogens[uid]
+			if (P.onpoint(target))
+				return
+
 	var/obj/item/gun/G = src.equipped()
 	if(!istype(G) || !ismob(target))
 		src.visible_message("<span class='emote'><b>[src]</b> points to [target].</span>")
