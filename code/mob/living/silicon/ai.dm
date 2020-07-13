@@ -79,6 +79,27 @@ var/list/ai_emotions = list("Happy" = "ai_happy",\
 	req_access = list(access_heads)
 	var/obj/item/clothing/head/hat = null
 
+
+	custom_suicide = 1
+	suicide_mob(var/mob/user as mob) //if this is TOO ridiculous just remove it idc
+		if (!src.user_can_suicide(user))
+			return 0
+		if(!istype(user, /mob/living/carbon/human))
+			return 0
+		var/mob/living/carbon/human/H = user
+		var/hisher = his_or_her(user)
+		user.visible_message("<span class='alert'><b>[user] sticks [hisher] head into the [src] while keeping the start button pressed!</b></span>")
+		var/obj/item/organ/brain/myBrain = H.organHolder.brain
+		H.organHolder.drop_organ("brain")
+		SPAWN_DBG(1 SECONDS)
+			attackby(myBrain, H)
+			sleep(3 SECONDS)
+			turn_it_back_on()
+		SPAWN_DBG(50 SECONDS)
+			if (user && !isdead(user))
+				user.suiciding = 0
+		return 1
+
 /*
 	var/datum/game_mode/malfunction/AI_Module/module_picker/malf_picker
 	var/processing_time = 100

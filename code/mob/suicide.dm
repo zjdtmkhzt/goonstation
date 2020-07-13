@@ -17,6 +17,15 @@
 		return 0
 	return 1
 
+/mob/var/custom_suicide = 0
+/mob/var/suicide_distance = 1
+/mob/proc/suicide_mob(var/mob/user as mob)
+	return
+/mob/proc/user_can_suicide(var/mob/user as mob)
+	if (!istype(user) || get_dist(user, src) > src.suicide_distance || user.stat || user.restrained() || user.getStatusDuration("paralysis") || user.getStatusDuration("stunned"))
+		return 0
+	return 1
+
 // cirr here, the amount of code duplication for suicides a) made me sad and b) ought to have been in a parent proc to allow this functionality for everyone anyway
 // the suiciding var is already at the mob level for fuck's sakes
 /mob/verb/suicide()
@@ -117,8 +126,13 @@
 						continue
 				suicides += O
 
+		for (var/mob/O in orange(1,src))
+			LAGCHECK(LAG_HIGH)
+			if (O.custom_suicide)
+				suicides += O
+
 	if (suicides.len)
-		var/obj/selection
+		var/selection
 		if (suicides.len == 1)
 			selection = suicides[1]
 		else
@@ -141,8 +155,15 @@
 			src.on_chair = 0
 			src.buckled = null
 			return
-		else if (istype(selection))
-			selection.suicide(src)
+		else if (istype(selection, /obj))
+			var/obj/selectionT = selection
+			selectionT.suicide(src)
+			SPAWN_DBG(50 SECONDS)
+				if (src && !isdead(src))
+					src.suiciding = 0
+		else if (istype(selection, /mob))
+			var/mob/selectionT = selection
+			selectionT.suicide_mob(src)
 			SPAWN_DBG(50 SECONDS)
 				if (src && !isdead(src))
 					src.suiciding = 0
