@@ -1,0 +1,9 @@
+your@=thy
+yours@=thine
+is@=be
+you@=thou
+are@=art
+do@=doth
+does@=doth
+she@=the lady
+i think@=methinks
