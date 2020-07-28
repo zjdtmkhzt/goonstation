@@ -38,14 +38,21 @@ datum/pathogeneffects
 	// does an infectious snap
 	// makes others snap, should possibly infect you in the future if you are made to snap a certain amount of times
 	proc/infect_snap(var/mob/M as mob, var/datum/pathogen/origin, var/range = 5)
-		for (var/mob/I in view(range, M.loc))
-			if (I != M && ((isturf(I.loc) && isturf(M.loc) && can_line_airborne(get_turf(M), I, 5)) || I.loc == M.loc))
-				if(istype(M, /mob/living/carbon/human))
-					var/mob/living/carbon/human/H = I
-					if(prob(100-H.get_disease_protection()))
-						SPAWN_DBG(rand(0.5,2) SECONDS)
+		var/c = 1
+		var/songPitch = list(  1,  1,1.5,1.1)
+		var/songDelay = list(0.2,0.2,0.4,0.6)
+		SPAWN_DBG(1)
+			for (var/mob/I in view(range, M.loc))
+				if (I != M && ((isturf(I.loc) && isturf(M.loc) && can_line_airborne(get_turf(M), I, 5)) || I.loc == M.loc))
+					if(istype(M, /mob/living/carbon/human))
+						var/mob/living/carbon/human/H = I
+						if(prob(100-H.get_disease_protection()))
+							sleep(songDelay[c] SECONDS)
 							H.show_message("Pretty catchy tune...")
-							H.emote("snap") // consider yourself lucky I haven't implemented snap infection yet, human
+							H.fakesnap(songPitch[c]) // consider yourself lucky I haven't implemented snap infection yet, human
+							c++
+							if(c > length(songPitch))
+								c = 1
 
 	// creates an infective cloud
 	// this should give people better feedback about how be infected and how to avoid it
@@ -2043,6 +2050,18 @@ datum/pathogeneffects/malevolent/radiation
 		if (R == "silver")
 			return "The silver appears to be moderating the reaction within the pathogen's gland." //neutron capture
 
+/mob/living/carbon/human/proc/fakesnap(sPitch)
+	if (!src.restrained())
+		if (src.emote_check())
+			if (src.bioHolder.HasEffect("chime_snaps"))
+				src.sound_fingersnap = 'sound/musical_instruments/WeirdChime_5.ogg'
+				src.sound_snap = 'sound/impact_sounds/Glass_Shards_Hit_1.ogg'
+			src.visible_message("<B>[src]</B> snaps [his_or_her(src)] fingers along to a strange tune.")
+			if (narrator_mode)
+				playsound(src.loc, 'sound/vox/deeoo.ogg', 50, 1, pitch = sPitch)
+			else
+				playsound(src.loc, src.sound_fingersnap, 50, 1, pitch = sPitch)
+
 datum/pathogeneffects/malevolent/snaps
 	name = "Snaps"
 	desc = "The infection forces its host's fingers to occasionally snap."
@@ -2059,7 +2078,7 @@ datum/pathogeneffects/malevolent/snaps
 	disease_act(var/mob/M, var/datum/pathogen/origin)
 		if (!origin.symptomatic)
 			return
-		if (prob(origin.stage * 3))
+		if (prob(origin.stage * 5))
 			snap(M, origin)
 
 	may_react_to()
