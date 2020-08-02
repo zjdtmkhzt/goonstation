@@ -50,3 +50,17 @@
 			donor.reagents.add_reagent("toxin", 1 * mult) //Will really start to feel it after the omnizine wears off
 			if (prob(20))
 				donor.emote(pick("twitch", "groan"))
+
+//stolen from the admin button because I know fuck all about pathogens - Kyle //stolen from appendicitis because I know fuck all about pathogens - tarm. zjd please refactor this
+/obj/item/organ/appendix/proc/add_pathogens(var/mob/living/A, var/amount)
+	if (!A || !A.reagents)
+		return 0
+
+	A.reagents.add_reagent("pathogen", amount)
+	var/datum/reagent/blood/pathogen/R = A.reagents.get_reagent("pathogen")
+	var/datum/pathogen/P = unpool(/datum/pathogen)
+	P.setup(1)
+	R.pathogens += P.pathogen_uid
+	R.pathogens[P.pathogen_uid] = P
+
+	return 1
