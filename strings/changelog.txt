@@ -1,5 +1,17 @@
 
 (t)tue aug 25 20
+(u)glassofmilk
+(p)1826
+(e)🆕🎨|feature, sprites
+(*)Added the new Association Component - a MechComp piece that stores key/value pairs
+(u)Tarmunora
+(p)1942
+(e)⚖|balance
+(+)Changed suplexing to interrupt some action bars, notably shambler devour
+(u)Superlagg
+(p)1900
+(e)🆕|feature
+(+)You now keep your held item if you were an antag at any point in the round, or you finish the round in the cryotron.
 (u)Superlagg
 (p)1831
 (e)⚖🆕|balance, feature
