@@ -1136,6 +1136,7 @@ var/datum/preMapLoad/preMapLoad = new
 #include "code\obj\artifacts\artifact_items\gun_cell.dm"
 #include "code\obj\artifacts\artifact_items\instrument.dm"
 #include "code\obj\artifacts\artifact_items\melee_weapon.dm"
+#include "code\obj\artifacts\artifact_items\mining_tool.dm"
 #include "code\obj\artifacts\artifact_items\power_cell.dm"
 #include "code\obj\artifacts\artifact_items\teleport_wand.dm"
 #include "code\obj\artifacts\artifact_items\wall_wand.dm"

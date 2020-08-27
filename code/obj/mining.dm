@@ -1106,7 +1106,7 @@
 			if(ishuman(L))
 				H = L
 			var/obj/item/held = L.equipped()
-			if(istype(held, /obj/item/mining_tool) || istype(held, /obj/item/mining_tools) || (isnull(held) && H && (H.is_hulk() || istype(H.gloves, /obj/item/clothing/gloves/concussive))))
+			if(istype(held, /obj/item/artifact/mining_tool) || istype(held, /obj/item/mining_tool) || istype(held, /obj/item/mining_tools) || (isnull(held) && H && (H.is_hulk() || istype(H.gloves, /obj/item/clothing/gloves/concussive))))
 				L.click(src, list(), null, null)
 			return
 
@@ -1135,7 +1135,8 @@
 					message += "<span class='alert'>[E.analysis_string]</span><br>"
 			message += "----------------------------------"
 			boutput(user, message)
-
+		else if(istype(W, /obj/item/mining_tools) || istype(W, /obj/item/artifact/mining_tool))
+			// no annoying message, please
 		else
 			boutput(user, "<span class='alert'>You hit the [src.name] with [W], but nothing happens!</span>")
 		return
