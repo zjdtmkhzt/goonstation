@@ -98,11 +98,32 @@
 				for(var/hit in 1 to length)
 					if(!damage_asteroid(currentTurf))
 						break
+					damage_asteroid(step(currentTurf, forward))
 					currentTurf = get_step(currentTurf, dir)
 				dir = turn(forward, -side*45)
 				for(var/hit in 1 to length)
 					if(!damage_asteroid(currentTurf))
 						break
+					damage_asteroid(step(currentTurf, forward))
+					currentTurf = get_step(currentTurf, dir)
+				dir = turn(forward, -side*45)
+				for(var/hit in 1 to length)
+					if(!damage_asteroid(currentTurf))
+						break
+					currentTurf = get_step(currentTurf, dir)
+			if(3)
+				var/currentTurf = first
+				var/dir = turn(forward, side*45)
+				for(var/hit in 1 to length)
+					if(!damage_asteroid(currentTurf))
+						break
+					damage_asteroid(step(currentTurf, forward))
+					currentTurf = get_step(currentTurf, dir)
+				dir = turn(forward, -side*45)
+				for(var/hit in 1 to length)
+					if(!damage_asteroid(currentTurf))
+						break
+					damage_asteroid(step(currentTurf, forward))
 					currentTurf = get_step(currentTurf, dir)
 				dir = turn(forward, -side*45)
 				for(var/hit in 1 to length)
