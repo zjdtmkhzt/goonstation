@@ -41,4 +41,10 @@
 			else
 				H.health_implant.icon_state = null
 
+		if (H.pathogen_mon)
+			if (H.pathogens.len)
+				H.pathogen_mon.icon_state = "pathogen"
+			else
+				H.pathogen_mon.icon_state = null
+
 		..()

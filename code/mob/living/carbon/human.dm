@@ -16,6 +16,7 @@
 
 	var/image/health_mon = null
 	var/image/health_implant = null
+	var/image/pathogen_mon = null
 	var/image/arrestIcon = null
 
 	var/pin = null
@@ -178,6 +179,9 @@
 
 	health_implant = image('icons/effects/healthgoggles.dmi',src,"100",10)
 	health_mon_icons.Add(health_implant)
+
+	pathogen_mon = image('icons/effects/healthgoggles.dmi',src,"100",10)
+	pathogen_mon_icons.Add(pathogen_mon)
 
 	arrestIcon = image('icons/effects/sechud.dmi',src,null,10)
 	arrestIconsAll.Add(arrestIcon)
@@ -484,13 +488,16 @@
 	src.implant = null
 
 	for(var/client/C)
-		C.images -= list(health_mon, health_implant, arrestIcon)
+		C.images -= list(health_mon, health_implant, pathogen_mon, arrestIcon)
 	if(health_mon)
 		health_mon.dispose()
 		health_mon_icons -= health_mon
 	if(health_implant)
 		health_implant.dispose()
 		health_mon_icons -= health_implant
+	if(pathogen_mon)
+		pathogen_mon.dispose()
+		pathogen_mon_icons -= pathogen_mon
 	if(arrestIcon)
 		arrestIcon.dispose()
 		arrestIconsAll -= arrestIcon

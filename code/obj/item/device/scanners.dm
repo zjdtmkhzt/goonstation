@@ -337,6 +337,17 @@ that cannot be itched
 	throw_range = 10
 	mats = 2
 
+/obj/item/device/analyzer/healthanalyzer_patho_upgrade
+	name = "health analyzer pathogen upgrade"
+	desc = "A small upgrade card that allows ProDoc Healthgoggles to display whether or not a patient has a pathogen at a glance."
+	icon_state = "organ_health_upgr"
+	flags = FPRINT | TABLEPASS | CONDUCT
+	throwforce = 0
+	w_class = 1.0
+	throw_speed = 5
+	throw_range = 10
+	mats = 2
+
 ///////////////////////////////////// Reagent scanner //////////////////////////////
 
 /obj/item/device/reagentscanner

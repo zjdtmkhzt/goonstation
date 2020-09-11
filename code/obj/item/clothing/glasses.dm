@@ -402,6 +402,7 @@
 	uses_multiple_icon_states = 1
 	var/client/assigned = null
 	var/scan_upgrade = 0
+	var/patho_upgrade = 0
 	var/health_scan = 0
 	mats = 8
 	color_r = 0.85
@@ -416,10 +417,12 @@
 	process()
 		if (assigned)
 			assigned.images.Remove(health_mon_icons)
+			assigned.images.Remove(pathogen_mon_icons)
 			addIcons()
 
 			if (loc != assigned.mob)
 				assigned.images.Remove(health_mon_icons)
+				assigned.images.Remove(pathogen_mon_icons)
 				assigned = null
 
 			//sleep(2 SECONDS)
@@ -429,6 +432,15 @@
 	proc/addIcons()
 		if (assigned)
 			for (var/image/I in health_mon_icons)
+				if (!I || !I.loc || !src)
+					continue
+				if (I.loc.invisibility && I.loc != src.loc)
+					continue
+				else
+					assigned.images.Add(I)
+			if(!patho_upgrade)
+				return
+			for (var/image/I in pathogen_mon_icons)
 				if (!I || !I.loc || !src)
 					continue
 				if (I.loc.invisibility && I.loc != src.loc)
@@ -463,6 +475,17 @@
 				src.health_scan = 1
 				src.icon_state = "prodocs-upgraded"
 				boutput(user, "<span class='notice'>Health scan upgrade installed.</span>")
+				playsound(src.loc ,"sound/items/Deconstruct.ogg", 80, 0)
+				user.u_equip(W)
+				qdel(W)
+				return
+		else if (istype(W, /obj/item/device/analyzer/healthanalyzer_patho_upgrade))
+			if (src.patho_upgrade)
+				boutput(user, "<span class='alert'>[src] already has a pathogen scan upgrade!</span>")
+				return
+			else
+				src.patho_upgrade = 1
+				boutput(user, "<span class='notice'>Pathogen scan upgrade installed.</span>")
 				playsound(src.loc ,"sound/items/Deconstruct.ogg", 80, 0)
 				user.u_equip(W)
 				qdel(W)
