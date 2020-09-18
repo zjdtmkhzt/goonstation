@@ -75,7 +75,7 @@ datum/pathogeneffects
 		R.reagent_list["pathogen"] = Q
 		Q.holder = R
 		R.update_total()
-		R.trans_to(T, amount)
+		R.reaction(T)
 
 	// infect_direct(mob, datum/pathogen) : void
 	// This is the proc that handles direct transmission of the pathogen from one mob to another. This should be called in particular infection scenarios. For example, a sweating person

@@ -486,7 +486,7 @@ datum
 			smoke_spread_mod = 5
 
 			reaction_turf(var/turf/T, var/volume)
-				return
+				return 1 // pls make puddle
 
 			reaction_mob(var/mob/M, var/method=TOUCH, var/volume_passed)
 				// sure just fucking splash around in the stuff
