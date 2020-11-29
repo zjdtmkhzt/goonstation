@@ -420,6 +420,14 @@
 	A.health -= dmg_amount
 	A.health = max(0,min(A.health,100))
 
+	if(prob(dmg_amount*2))
+		A.effect_reconfigure(A.associated_object)
+		if (A.artitype.reconfigure_text)
+			var/turf/T = get_turf(src)
+			if (T) T.visible_message("<b>[src] [A.artitype.reconfigure_text]</b>")
+		if (A.activ_sound)
+			playsound(src.loc, A.activ_sound, 100, 1)
+
 	if (A.health <= 0)
 		src.ArtifactDestroyed()
 	return

@@ -86,6 +86,13 @@ ABSTRACT_TYPE(/datum/artifact/)
 		ArtifactLogs(usr, null, O, "deactivated", null, 0)
 		return 0
 
+	/// may be called when an artifact is damaged, rerandomizes some variables
+	proc/effect_reconfigure(var/obj/O)
+		if (!O)
+			return 1
+		ArtifactLogs(usr, null, O, "reconfigured", null, 0)
+		return 0
+
 	proc/effect_process(var/obj/O)
 		if (!O)
 			return 1

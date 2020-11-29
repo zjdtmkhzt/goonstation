@@ -175,6 +175,7 @@ var/datum/artifact_controller/artifact_controls
 	var/list/nouns_large = list("object","machine","artifact","contraption","structure","edifice")
 	var/list/nouns_small = list("item","device","relic","widget","utensil","gadget","accessory","gizmo")
 	var/list/touch_descriptors = list("You can't really tell how it feels.")
+	var/reconfigure_text = "reconfigures itself."
 
 	New()
 		..()
@@ -206,6 +207,7 @@ var/datum/artifact_controller/artifact_controls
 	nouns_large = list("monolith","slab","obelisk","pylon","menhir","machine","structure")
 	nouns_small = list("implement","device","instrument","apparatus","appliance","mechanism","tool")
 	touch_descriptors = list("It feels cold.","It feels smooth.","Touching it makes you feel uneasy.")
+	reconfigure_text = "emits a loud whirring sound before quieting down again."
 
 	generate_name()
 		return "unit [pick("alpha","sigma","tau","phi","gamma","epsilon")]-[pick("x","z","d","e","k")] [rand(100,999)]"
@@ -231,6 +233,7 @@ var/datum/artifact_controller/artifact_controls
 	nouns_large = list("mass","pile","heap","glob","mound","clump","bulk")
 	nouns_small = list("lump","chunk","cluster","clod","nugget","giblet","organ")
 	touch_descriptors = list("It feels warm.","It feels gross.","You can feel a faint pulsing.")
+	reconfigure_text = "pulses agitatedly for a second."
 	var/list/prefix = list("cardio","neuro","physio","morpho","brachio","bronchi","dermo","ossu")
 	var/list/thingy = list("cystic","genetic","metabolic","static","vascular","muscular")
 	var/list/action = list("stimulator","suppressor","regenerator","depressor","mutator")
@@ -264,6 +267,7 @@ var/datum/artifact_controller/artifact_controls
 	nouns_large = list("jewel","crystal","sculpture","statue","brazier","ornament","edifice")
 	nouns_small = list("wand","scepter","staff","rod","cane","crozier","trophy")
 	touch_descriptors = list("It feels warm.","It feels smooth.","It is suprisingly pleasant to touch.")
+	reconfigure_text = "rapidly shifts through several colors before settling down."
 	var/list/material = list("ebon","ivory","pearl","golden","malachite","diamond","ruby","emerald","sapphire","opal")
 	var/list/object = list("jewel","trophy","favor","boon","token","crown","treasure","sacrament","oath")
 	var/list/aspect = list("wonder","splendor","power","plenty","mystery","glory","majesty","eminence","grace")
@@ -295,6 +299,7 @@ var/datum/artifact_controller/artifact_controls
 	nouns_large = list("edifice","effigy","statue","idol","sculpture","stele","artifact")
 	nouns_small = list("spike","needle","thorns","relic","carving","figurine","item")
 	touch_descriptors = list("It feels cold.","It feels gross.","Touching it makes you feel uneasy.")
+	reconfigure_text = "produces a deep, unsettling noise."
 	var/list/general_adjectives = list("dark","cold","horrid","foul","sinister","cruel","rancid","demonic")
 	var/list/object_nouns = list("hand","eye","finger","blood","breath","thorns","mantle","skin","bane","scourge","wrath",
 	"favor","will","tentacles","mandible","fangs","maw","flesh","ichor","teeth","heart")
@@ -360,6 +365,7 @@ var/datum/artifact_controller/artifact_controls
 	nouns_small = list("widget","thingy","device","appliance","mechanism","accessory","gizmo")
 	touch_descriptors = list("It feels warm.","It feels cold.","It is suprisingly pleasant to touch.",
 	"You can feel a faint pulsing.")
+	reconfigure_text = "shifts some of its components around with some gentle ticking sounds."
 	var/list/prefixes = list("meta","poly","anti","hyper","hypo","nano","mega","infra","ultra","trans","micro","macro")
 	var/list/particles = list("quark","tachyon","neutron","positron","photon","neutrino","lepton","baryon","atom","molecule")
 	var/list/verber = list("stabilizer","synchroniser","generator","coupler","fuser","linker","materializer")
