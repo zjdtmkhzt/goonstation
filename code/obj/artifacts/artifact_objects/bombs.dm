@@ -155,32 +155,35 @@ ABSTRACT_TYPE(/datum/artifact/bomb)
 	var/payload_type = 0 // 0 for smoke, 1 for foam, 2 for propellant, 3 for just dumping fluids
 	var/recharge_delay = 600
 	var/list/payload_reagents = list()
-
-	post_setup()
-		payload_type = rand(0,3)
-		var/list/potential_reagents = list()
-		switch(artitype.name)
-			if ("ancient")
-				// industrial heavy machinery kinda stuff
-				potential_reagents = list("nanites","liquid plasma","mercury","lithium","plasma","radium","uranium","phlogiston",
+	var/static/potential_reagents_ancient = list("nanites","liquid plasma","mercury","lithium","plasma","radium","uranium","phlogiston",
 				"thermite","fuel","acid","silicate","lube","cryostylane","oil")
-			if ("martian")
-				// medicine, some poisons, some gross stuff
-				potential_reagents = list("charcoal","styptic_powder","salbutamol","anti_rad","silver_sulfadiazine","synaptizine",
+	var/static/potential_reagents_martian = list("charcoal","styptic_powder","salbutamol","anti_rad","silver_sulfadiazine","synaptizine",
 				"omnizine","synthflesh","cyanide","ketamine","toxin","neurotoxin","mutagen","fake_initropidril",
 				"toxic_slurry","jenkem","space_fungus","blood","vomit","gvomit","urine","meat_slurry","grease")
-			if ("eldritch")
-				// all the worst stuff. all of it
-				potential_reagents = list("chlorine","fluorine","lithium","mercury","plasma","radium","uranium","strange_reagent",
+	var/static/potential_reagents_eldritch = list("chlorine","fluorine","lithium","mercury","plasma","radium","uranium","strange_reagent",
 				"phlogiston","thermite","infernite","foof","fuel","blackpowder","acid","amanitin","coniine","cyanide","curare",
 				"formaldehyde","lipolicide","initropidril","cholesterol","itching","pacid","pancuronium","polonium",
 				"sodium_thiopental","ketamine","sulfonal","toxin","venom","neurotoxin","mutagen","wolfsbane",
 				"toxic_slurry","histamine","sarin")
+	var/potential_reagents = list()
+
+	post_setup()
+		payload_type = rand(0,3)
+		switch(artitype.name)
+			if ("ancient")
+				// industrial heavy machinery kinda stuff
+				potential_reagents = potential_reagents_ancient
+			if ("martian")
+				// medicine, some poisons, some gross stuff
+				potential_reagents = potential_reagents_martian
+			if ("eldritch")
+				// all the worst stuff. all of it
+				potential_reagents = potential_reagents_eldritch
 			else
 				// absolutely everything
 				potential_reagents = all_functional_reagent_ids
 
-		if (potential_reagents.len > 0)
+		if (length(potential_reagents) > 0)
 			var/looper = rand(2,8)
 			while (looper > 0)
 				var/reagent = pick(potential_reagents)
@@ -190,6 +193,29 @@ ABSTRACT_TYPE(/datum/artifact/bomb)
 				payload_reagents += reagent
 
 		recharge_delay = rand(200,800)
+
+	effect_reconfigure(obj/O)
+		if (..())
+			return
+
+		var/remove_amt = rand(0, min(3, payload_reagents.len)) // remove some reagents!
+		var/looper = remove_amt
+		while (looper > 0)
+			looper--
+			payload_reagents -= pick(payload_reagents)
+
+		var/add_amt = rand(1, 3)																 // add some!
+		if (length(potential_reagents) > 0)
+			looper = add_amt
+			while (looper > 0)
+				var/reagent = pick(potential_reagents)
+				if(payload_type == 3 && ban_from_fluid.Find(reagent)) // do not pick stuff that is banned from fluid dump
+					continue
+				looper--
+				payload_reagents += reagent
+
+		if(prob(30))
+			payload_type = rand(0,3)
 
 	deploy_payload(var/obj/O)
 		if (..())
