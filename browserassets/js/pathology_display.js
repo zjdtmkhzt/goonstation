@@ -80,12 +80,15 @@
 			var listing = knownList[i];
 			html += "<tr>"
 			for (k in listing) {
-				var data = listing[k]
-				if (k != "seq")
-					data = prettifyYesNo(data);
-				else
+				var data = listing[k];
+				if (k == "stable" || k == "trans" || k == "stableType")
+					data = prettify(data);
+				else if(k = "seq")
 					data = insertSpaces(data);
-				html += "<td>" + data + "</td>";
+				if (k == "seq")
+					html += "<td>" + data + "</td>";
+				else
+					html += "<td style='text-align:center'>" + data + "</td>";
 			}
 			html +="</tr>"
 		}
@@ -94,8 +97,8 @@
 		setListeners();
 	}
 
-	function prettifyYesNo(text) {
-		if (text == "Yes") {
+	function prettify(text) {
+		if (text == "Yes" || text == "Good") {
 			text = "<span style='font-weight:bold;color:#0C0;'>" + text + "</span>";
 		} else {
 			text = "<span style='font-weight:bold;color:#D00;'>" + text + "</span>";
@@ -121,7 +124,10 @@
 		var headerObj = {
 			seq: "Sequence",
 			stable: "Stable",
-			trans: "Trans"
+			stableType: "Stable Type",
+			trans: "Trans",
+			goodTrans: "Good Trans",
+			badTrans: "Bad Trans"
 		};
 
 		var sortChar = '\u2193';

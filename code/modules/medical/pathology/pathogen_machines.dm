@@ -511,7 +511,7 @@
 			// "<table><tr><th>Sequence</th><th>Stable</th><th>Transient</th></tr>"
 			for (var/seq in db.known_sequences)
 				//op += "<tr><td>[seq]</td><td>[db.known_sequences[seq] ? "Yes" : "No"]</td><td>[db.transient_sequences[seq]]</td></tr>"
-				json += "[delimit]{seq: '[seq]', stable:'[db.known_sequences[seq] ? "Yes" : "No"]', trans: '[db.transient_sequences[seq]]'}"
+				json += "[delimit]{seq: '[seq]', stable:'[db.known_sequences[seq][1] ? "Yes" : "No"]', stableType:'[db.known_sequences[seq][2]]', trans: '[db.transient_sequences[seq][1]]', transGood: '[db.transient_sequences[seq][2]]', transBad: '[db.transient_sequences[seq][3]]'}"
 				delimit = ", "
 			json += "]"
 
@@ -520,7 +520,26 @@
 					<head>
 						<title>Known Sequences</title>
 						<style>
-							table {
+							body
+							{
+								font-family: Tahoma, Arial, sans-serif;
+								font-size: 10pt;
+								background-color:#222;
+								color:#dddddd;
+							}
+							a:link
+							{
+								color: #009900;
+								background-color: transparent;
+								text-decoration: none;
+							}
+							pre, tt, code
+							{
+								font-family: Consolas, 'Lucidia Console', monospace;
+							}
+							table
+							{
+								background-color: #444;
 								border: 1px solid black;
 								border-collapse:collapse;
 							}
@@ -542,7 +561,7 @@
 					</body>
 				</html>"}
 			//html = '<table><th><a href="#" onclick="sortAndDisplay('seq'); return false;">Sequence</a></th><th><a href="#" onclick="sortAndDisplay('stable'); return false;">Stable</a></th><th><a href="#" onclick="sortAndDisplay('trans'); return false;">Transient</a></th>' + html + '</table>';
-			usr.Browse(op, "window=pathology_ks;size=300x500")
+			usr.Browse(op, "window=pathology_ks;size=415x500")
 		if (href_list["setstate"])
 			var/state  = text2num(href_list["newstate"])
 			if(state != null && state >= 0 && state <= 5 && state != PATHOGEN_MANIPULATOR_STATE_SPLICING_SESSION && src.manip.machine_state != PATHOGEN_MANIPULATOR_STATE_SPLICING_SESSION)
@@ -611,9 +630,6 @@
 
 			if (analyzed in pathogen_controller.UID_to_symptom)
 				stable = 1
-			if (!(analyzed in db.known_sequences))
-				db.known_sequences[analyzed] = stable
-				db.certainty += (stable ? 8 : 4) * (100 - db.certainty) / 100
 
 			for (var/i = 1, i <= bits, i++)
 				var/curr = copytext(analyzed, (i - 1) * 3 + 1, i * 3 + 1)
@@ -657,14 +673,16 @@
 				/*
 				end_part += "<font color='[col]'>[curr]</font> "
 				*/
+				if (!(analyzed in db.known_sequences))
+					db.known_sequences[analyzed] = list(stable,stableType)
 				if (i == bits && match && (!stable || match > 1))
 					//output += "Transient: <font color='#00ff00'>Yes</font><BR>"
 					transient = 1
-					db.transient_sequences[analyzed] = "Yes"
+					db.transient_sequences[analyzed] = list("Yes", transGood, transBad)
 				else if (i == bits)
 					//output += "Transient: <font color='#ff0000'>No</font><BR>"
 					transient = -1
-					db.transient_sequences[analyzed] = "No"
+					db.transient_sequences[analyzed] = list("No",0,0)
 			seqs += "]"
 			conf += "]"
 
@@ -925,7 +943,7 @@
 					for (var/s in seqs)
 						if (s in db.known_sequences)
 							continue
-						db.known_sequences[s] = 1
+						db.known_sequences[s] = list(1,"UNK")
 						db.certainty += 5 * (100 - db.certainty) / 100
 						db.certainty = min(db.certainty, 100)
 						if(!(s in db.transient_sequences))
