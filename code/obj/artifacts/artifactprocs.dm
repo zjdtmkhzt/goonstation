@@ -427,7 +427,16 @@
 			if("martian")
 				T.visible_message("<span class='alert'><B>[src] bursts open, and rapidly liquefies!</B></span>")
 			if("wizard")
-				T.visible_message("<span class='alert'><B>[src] shatters and disintegrates!</B></span>")
+				A.artitype.destruction_overlay.blend_mode = BLEND_INSET_OVERLAY
+				src.appearance_flags |= KEEP_TOGETHER
+				src.overlays += A.artitype.destruction_overlay
+				SPAWN_DBG(1 SECOND)
+					T.visible_message("<span class='alert'><B>[src] shatters and disintegrates!</B></span>")
+					playsound(T, pick('sound/impact_sounds/Glass_Shatter_1.ogg','sound/impact_sounds/Glass_Shatter_2.ogg','sound/impact_sounds/Glass_Shatter_3.ogg'), 100, 1)
+					for(var/i in 1 to rand(3,6))
+						new /obj/item/raw_material/gemstone(T)
+					qdel(src)
+				return
 			if("eldritch")
 				T.visible_message("<span class='alert'><B>[src] warps in on itself and vanishes!</B></span>")
 			if("precursor")

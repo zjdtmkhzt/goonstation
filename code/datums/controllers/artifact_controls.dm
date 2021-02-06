@@ -194,6 +194,7 @@ var/datum/artifact_controller/artifact_controls
 	var/list/nouns_large = list("object","machine","artifact","contraption","structure","edifice")
 	var/list/nouns_small = list("item","device","relic","widget","utensil","gadget","accessory","gizmo")
 	var/list/touch_descriptors = list("You can't really tell how it feels.")
+	var/static/image/destruction_overlay = image('icons/obj/artifacts/artifacts.dmi',"cracks")
 
 	New()
 		..()
