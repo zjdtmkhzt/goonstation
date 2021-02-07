@@ -283,6 +283,8 @@ var/datum/artifact_controller/artifact_controls
 		namestring += "[pick(action)]"
 		return namestring
 
+var/global/mutable_appearance/cracks_ma = null
+
 /datum/artifact_origin/wizard
 	name = "wizard"
 	fault_types = list(/datum/artifact_fault/irradiate,/datum/artifact_fault/shutdown,/datum/artifact_fault/murder,
@@ -308,6 +310,18 @@ var/datum/artifact_controller/artifact_controls
 	var/list/material = list("ebon","ivory","pearl","golden","malachite","diamond","ruby","emerald","sapphire","opal")
 	var/list/object = list("jewel","trophy","favor","boon","token","crown","treasure","sacrament","oath")
 	var/list/aspect = list("wonder","splendor","power","plenty","mystery","glory","majesty","eminence","grace")
+
+	New()
+		. = ..()
+		if (!cracks_ma)
+			cracks_ma = new
+			cracks_ma.icon = 'icons/obj/artifacts/artifacts.dmi'
+			cracks_ma.icon_state = "cracks"
+			cracks_ma.alpha = 255
+			cracks_ma.invisibility = 0
+			cracks_ma.layer = MOB_LAYER
+			cracks_ma.plane = PLANE_OVERLAY_EFFECTS
+			cracks_ma.mouse_opacity = 0
 
 	post_setup(obj/artifact)
 		. = ..()

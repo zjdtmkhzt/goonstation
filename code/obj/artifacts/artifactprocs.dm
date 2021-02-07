@@ -427,9 +427,11 @@
 			if("martian")
 				T.visible_message("<span class='alert'><B>[src] bursts open, and rapidly liquefies!</B></span>")
 			if("wizard")
-				A.artitype.destruction_overlay.blend_mode = BLEND_INSET_OVERLAY
+				var/atom/E = new/obj/overlay/tile_effect()
+				E.appearance = cracks_ma
+				E.blend_mode = BLEND_INSET_OVERLAY
 				src.appearance_flags |= KEEP_TOGETHER
-				src.overlays += A.artitype.destruction_overlay
+				src.vis_contents += E
 				SPAWN_DBG(1 SECOND)
 					T.visible_message("<span class='alert'><B>[src] shatters and disintegrates!</B></span>")
 					playsound(T, pick('sound/impact_sounds/Glass_Shatter_1.ogg','sound/impact_sounds/Glass_Shatter_2.ogg','sound/impact_sounds/Glass_Shatter_3.ogg'), 100, 1)
