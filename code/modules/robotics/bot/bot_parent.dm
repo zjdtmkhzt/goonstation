@@ -93,8 +93,10 @@
 			src.botcard = new /obj/item/card/id(src)
 			src.botcard.access = get_access(src.access_lookup)
 			src.botnet_id = format_net_id("\ref[src]")
+		START_TRACKING
 
 	disposing()
+		STOP_TRACKING
 		botcard = null
 		qdel(chat_text)
 		chat_text = null
