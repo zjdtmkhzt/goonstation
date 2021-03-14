@@ -3531,6 +3531,102 @@
 		check_buddy()
 			return 0
 
+#define MODE_TRAVEL 0
+#define MODE_WORSHIP 1
+#define MODE_DEFEND 2
+	artifact
+		name = "worship"
+		task_id = "WORSHIP"
+		var/obj/machinery/artifact/robot_controller/control_art = null
+		var/datum/artifact/robot_controller/control_dat = null
+		var/mode = MODE_TRAVEL
+		var/worship_timer = 0
+		var/mob/living/attack_target = null
+
+		New(var/obj/machinery/artifact/robot_controller/A)
+			..()
+			src.control_art = A
+			src.control_dat = A.artifact
+
+		attack_response(mob/attacker)
+			. = ..()
+			src.master.speak(pick("You won't get away with this!", "Help, I am being attacked!", "Get away from me!"))
+			if(isliving(attacker))
+				control_dat.add_enemy(attacker)
+
+		proc/get_area_around_art()
+			. = list()
+			for(var/turf/T in range(control_dat.worship_radius, control_art))
+				if(src.master.CanPass(T))
+					. += T
+
+		task_act()
+			if (..())
+				return
+			if (!control_art || control_art.disposed || !control_dat.activated || control_art.z != master.z)
+				src.master.speak(pick("What just happened?", "I feel so confused...", "Where am I?"))
+				src.master.remove_current_task()
+				return
+			switch(src.mode)
+				if(MODE_TRAVEL)
+					if (src.master.moving) // it's ok, we're on the way!
+						return
+					// it's not ok, we gotta find the way!
+					if (get_dist(src.master, control_art) > control_dat.worship_radius)
+						src.master.navigate_to(pick(get_area_around_art()), adjacent = TRUE)
+					else
+					// we are there!
+						src.mode = MODE_WORSHIP
+				if(MODE_WORSHIP)
+					if (get_dist(src.master, control_art) > control_dat.worship_radius)
+						src.mode = MODE_TRAVEL
+						return
+					if(!src.worship_timer)
+						var/mob/living/bad_person = null
+						for(var/mob/living/person in view(7,master)) // look for people who disturb the peace!
+							if(isalive(person) && src.control_dat.enemies.Find(person)) // oh no bad person detected!
+								bad_person = person
+								break
+						if(bad_person) // let's get them!
+							src.master.point(bad_person)
+							src.master.set_emotion(pick("angry","screaming"))
+							src.master.speak(pick(
+								"An enemy of the great [control_dat.internal_name]!",
+								"Our prayer must not be disturbed!",
+								"Leave us alone, you big nerd!",
+								"You can't take [control_dat.internal_name] from us!",
+								"Everyone, get [bad_person.name] now!"))
+							src.mode = MODE_DEFEND
+							src.attack_target = bad_person
+							src.worship_timer = rand(8,16)
+						else
+							src.master.set_emotion(pick("happy","love","joy"))
+							src.master.speak(pick(
+								"Praise be to [control_dat.internal_name]!",
+								"All hail the great [control_dat.internal_name]!",
+								"[control_dat.internal_name], give us your wisdom!",
+								"I think [control_dat.internal_name] is really cool!"))
+							src.worship_timer = rand(8,16)
+					else
+						src.worship_timer--
+				if(MODE_DEFEND)
+					if(!IN_RANGE(src.master, src.attack_target, 12) || !isalive(src.attack_target)) // they learned their lesson
+						src.mode = MODE_TRAVEL
+						src.master.speak(pick("And <i>stay</i> away!", "What an unpleasant person.","Well, back to it!", "Threat neutralized!"))
+						src.attack_target = null
+						return
+					var/range = 1
+					if(src.master.tool?.is_gun)
+						range = 5
+					if(IN_RANGE(src.master, src.attack_target, range))
+						src.master.bot_attack(attack_target, lethal = src.control_dat.lethal)
+					else
+						src.master.navigate_to(src.attack_target, adjacent = TRUE)
+#undef MODE_TRAVEL
+#undef MODE_WORSHIP
+#undef MODE_DEFEND
+
+
 #undef SEARCH_EMOTION
 #undef GUARDING_EMOTION
 #undef GUARDING_DORK_EMOTION
